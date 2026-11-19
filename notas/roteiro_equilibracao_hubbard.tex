@@ -1,0 +1,271 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage[hidelinks]{hyperref}
+
+\title{Equilibração e termalização:\\das cadeias de spins ao modelo de Hubbard}
+\author{}
+\date{19 de novembro de 2026}
+
+\begin{document}
+\maketitle
+
+\section{Contexto e objetivo}
+
+Este roteiro registra uma recomendação inicial de estudo para quem já tem
+familiaridade com mecânica quântica e operadores e vem de mecânica estatística
+e fenômenos críticos. A transição proposta é da descrição de estados de
+equilíbrio para a pergunta dinâmica: como observáveis de um sistema quântico
+preparado fora do equilíbrio podem adquirir valores aproximadamente
+estacionários e, eventualmente, térmicos?
+
+O foco provisório será em \textbf{sistemas fechados, com evolução unitária}.
+Isso permite estudar o papel das interações, das conservações e da estrutura
+espectral sem introduzir inicialmente um banho. Não é uma decisão
+irreversível sobre o projeto: sistemas abertos poderão entrar se o objetivo
+posterior exigir. A cadeia de spins será uma etapa intermediária para chegar
+ao modelo de Hubbard, não uma substituição do objetivo original.
+
+Adotaremos $\hbar=k_B=1$. O tempo será denotado por $\tau$; a letra $t$
+ficará reservada ao hopping do modelo de Hubbard, sem fixar $t=1$.
+Energias e tempos têm, portanto, unidades inversas entre si.
+
+\section{Três noções que precisam permanecer distintas}
+
+\begin{description}
+  \item[Relaxação.] Aproximação aparente de um observável a um patamar,
+  ou perda de um desvio inicial, dentro de uma janela temporal especificada.
+  Uma curva com esse aspecto não demonstra, sozinha, equilibração ou
+  termalização.
+  \item[Equilibração.] Permanência do observável próximo de um valor de
+  referência durante a maior parte dos tempos considerados, com flutuações
+  pequenas segundo um critério declarado. Não exige convergência pontual
+  quando $\tau\to\infty$.
+  \item[Termalização.] Compatibilidade dos valores de observáveis locais
+  com um ensemble térmico apropriado à energia e às conservações relevantes
+  da preparação. É uma comparação adicional, não um sinônimo de estabilização.
+\end{description}
+
+Um estado global inicialmente puro permanece puro sob evolução unitária:
+não precisa se transformar em uma matriz densidade de Gibbs para que
+observáveis locais tenham comportamento térmico. Em sistemas finitos, a
+discrição do espectro permite oscilações e recorrências; não se deve
+prometer convergência exata nem inferir um limite termodinâmico de um
+único tamanho.
+
+\section{Por que não ficar apenas no dímero?}
+
+O dímero fechado é útil para entender mecanismos locais, sinais e
+frequências: poucos gaps de energia relevantes produzem oscilações e
+recorrências facilmente identificáveis. Ele não constitui, porém, uma
+plataforma robusta para investigar termalização genérica. Cadeias finitas
+oferecem uma dinâmica mais rica e podem apresentar equilibração prática
+em janelas acessíveis, mas exigem comparações entre tamanhos e tempos.
+\textbf{Nem toda cadeia termaliza.}
+
+\newpage
+\section{Modelos e domínio da ponte entre spins e férmions}
+
+\subsection{Cadeia de spins como ponto de partida}
+
+Considere uma cadeia aberta com $L$ sítios, $L$ par, e spin $1/2$ em cada
+sítio. Escrevemos $\mathbf S_i=\boldsymbol{\sigma}_i/2$, onde
+$\boldsymbol{\sigma}_i$ reúne as matrizes de Pauli no sítio $i$. O Hamiltoniano
+de partida será
+\begin{equation}
+  H_s =
+  J_1\sum_{i=1}^{L-1}\mathbf S_i\cdot\mathbf S_{i+1}
+  +J_2\sum_{i=1}^{L-2}\mathbf S_i\cdot\mathbf S_{i+2},
+  \qquad J_1>0.
+  \label{eq:spin}
+\end{equation}
+Os parâmetros $J_1$ e $J_2$ são acoplamentos de troca, com dimensão de
+energia. O primeiro é antiferromagnético; o segundo será uma variável
+de comparação, ainda sem valor escolhido.
+
+Para $J_2=0$, temos a cadeia de Heisenberg integrável. Um $J_2$ genérico,
+longe de pontos especiais, permite estudar uma versão não integrável.
+Essa mudança não garante termalização, tampouco uma escala de relaxação
+curta. Ambos os termos preservam a simetria global de spin
+$\mathrm{SU}(2)$; em particular, conservam
+$\mathbf S_{\mathrm{tot}}=\sum_i\mathbf S_i$.
+Se estatísticas espectrais forem usadas mais adiante, será necessário
+separar os setores de simetria pertinentes, inclusive as simetrias
+espaciais presentes, em vez de misturar todos os níveis.
+
+\subsection{O Hubbard tem outros graus de liberdade}
+
+Uma cadeia de spins $1/2$ possui dois estados locais,
+$|\uparrow\rangle$ e $|\downarrow\rangle$. No Hubbard de uma banda,
+o espaço local tem quatro estados:
+\[
+  |0\rangle,\qquad |\uparrow\rangle,\qquad
+  |\downarrow\rangle,\qquad |\uparrow\downarrow\rangle.
+\]
+Logo, o Hubbard contém dinâmica de carga e dupla ocupação que uma
+cadeia apenas de spins não representa.
+
+Para uma cadeia uniforme aberta com hopping entre primeiros vizinhos,
+adotaremos o Hamiltoniano canônico
+\begin{equation}
+  H_{\mathrm H} =
+  -t\sum_{\langle i,j\rangle,\sigma}
+  \left(c^\dagger_{i\sigma}c_{j\sigma}
+        +c^\dagger_{j\sigma}c_{i\sigma}\right)
+  +U\sum_{i=1}^{L}n_{i\uparrow}n_{i\downarrow},
+  \qquad U>0,
+  \label{eq:hubbard}
+\end{equation}
+com $t$ real, $\sigma\in\{\uparrow,\downarrow\}$ e
+$n_{i\sigma}=c^\dagger_{i\sigma}c_{i\sigma}$. Cada ligação não orientada
+aparece uma única vez na soma; o conjugado hermitiano está explícito.
+O número de partículas $N$ é fixo, a densidade é $n=N/L$ e meio
+preenchimento significa $N=L$. Não incluímos o termo grand-canônico
+$-\mu N$.
+
+Em meio preenchimento, para $U\gg |t|$ e no subespaço apropriado de baixa
+energia, com ocupação simples dominante, a projeção do Hubbard produz,
+na ordem dominante, a troca antiferromagnética
+\begin{equation}
+  J=\frac{4t^2}{U}.
+\end{equation}
+Essa ponte vale para o hopping de primeiros vizinhos não frustrado aqui
+considerado; não identifica os dois modelos para energias ou estados
+iniciais arbitrários. Em particular, a cadeia com $J_2\ne0$ é uma
+comparação dinâmica deliberada, não o modelo efetivo dominante desse
+Hubbard de primeiros vizinhos.
+
+\newpage
+\section{Protocolo inicial de estudo}
+
+\subsection{Preparação, evolução e observáveis}
+
+Uma preparação simples é o estado produto de Néel,
+\begin{equation}
+  |\psi_0\rangle=|\uparrow\downarrow\uparrow\downarrow\cdots\rangle,
+  \qquad
+  |\psi(\tau)\rangle=e^{-iH_s\tau}|\psi_0\rangle.
+\end{equation}
+Para um operador $O$, escreveremos
+$\langle O\rangle_\tau=\langle\psi(\tau)|O|\psi(\tau)\rangle$.
+Dois observáveis iniciais são
+\begin{align}
+  m_s(\tau)&=\frac{1}{L}\sum_{i=1}^{L}
+       (-1)^{i-1}\langle S_i^z\rangle_\tau,
+       \label{eq:ms}\\
+  C_i(\tau)&=\langle\mathbf S_i\cdot\mathbf S_{i+1}\rangle_\tau,
+       \qquad 1\le i<L.
+       \label{eq:corr}
+\end{align}
+A magnetização alternada mede a memória do padrão inicial; a correlação
+$C_i$ acompanha uma ligação específica, cuja posição deve ser registrada
+por causa das bordas abertas.
+
+É importante não trocar automaticamente essa correlação local por uma
+média espacial que possa ser conservada. Para $J_2=0$,
+$J_1\sum_i C_i(\tau)=\langle H_s\rangle$ é constante.
+A magnetização total $S_{\mathrm{tot}}^z$ também é conservada: serve
+como controle de consistência, não como diagnóstico de relaxação.
+
+\subsection{Separar estabilização de comparação térmica}
+
+O percurso recomendado é:
+\begin{enumerate}
+  \item Observar as séries temporais de $m_s$ e de correlações por
+  ligação, identificando transientes, oscilações e eventuais recorrências,
+  sem nomear todo patamar como térmico.
+  \item Comparar médias e flutuações em várias janelas temporais e em
+  diferentes tamanhos $L$, mantendo o protocolo e a escolha de ligação
+  comparáveis. Não fixamos aqui um tamanho nem uma janela.
+  \item Repetir a análise para $J_2=0$ e para um $J_2$ genérico não
+  integrável. Como o Hamiltoniano muda, a energia inicial e a referência
+  de equilíbrio devem ser determinadas em cada caso.
+  \item Só então comparar valores aparentemente equilibrados com
+  previsões térmicas, explicitando a energia da preparação, os setores
+  de simetria e as conservações usadas na construção do ensemble.
+\end{enumerate}
+
+Para tornar o segundo passo quantitativo, se $A(\tau)$ for uma das
+médias quânticas acima, uma janela $W=[\tau_a,\tau_b]$ permite definir
+\begin{equation}
+  \overline A_W=\frac{1}{\Delta\tau}\int_{\tau_a}^{\tau_b}A(\tau)\,d\tau,
+  \qquad
+  \delta A_W=
+  \left[\frac{1}{\Delta\tau}\int_{\tau_a}^{\tau_b}
+  \bigl(A(\tau)-\overline A_W\bigr)^2\,d\tau\right]^{1/2},
+  \quad \Delta\tau=\tau_b-\tau_a.
+\end{equation}
+Aqui $\delta A_W$ mede flutuações temporais da média quântica, não a
+incerteza de uma medida individual. Sua escala de comparação e a
+tolerância para chamar um patamar de estável ainda deverão ser escolhidas.
+
+\newpage
+\subsection{Uma referência não necessariamente térmica}
+
+Em um sistema finito, a média temporal de tempo infinito da matriz
+densidade tem a forma
+\begin{equation}
+  \overline\rho=\sum_E P_E\rho_0P_E,
+  \qquad \rho_0=|\psi_0\rangle\langle\psi_0|,
+  \label{eq:diagonal}
+\end{equation}
+onde $P_E$ projeta no autoespaço de energia $E$. A expressão preserva
+coerências dentro de subespaços degenerados; não se deve descartá-las
+por uma escolha arbitrária de base. Essa referência, usualmente
+associada ao ensemble diagonal, não é automaticamente térmica.
+Conhecê-la tampouco demonstra que as flutuações em uma janela acessível
+sejam pequenas.
+
+A integrabilidade traz conservações adicionais. Tanto a cadeia de
+Heisenberg com $J_2=0$ quanto a cadeia uniforme de Hubbard com hopping
+apenas entre primeiros vizinhos são integráveis. Por isso, quando
+necessário, a referência estacionária deverá considerar essas
+conservações, por exemplo mediante um ensemble de Gibbs generalizado
+(GGE). Isso não significa que todo estado inicial ou todo observável
+nesses modelos esteja impedido de apresentar valores compatíveis com
+uma descrição térmica usual.
+
+\section{Retorno ao Hubbard e critérios de progresso}
+
+Ao retornar à Eq.~\eqref{eq:hubbard}, o objetivo será conservar as
+distinções conceituais e acrescentar a dinâmica de carga. Além de
+observáveis de spin, podem ser acompanhadas a dupla ocupação média
+e, quando a preparação produzir um padrão alternado de densidade,
+seu desequilíbrio:
+\begin{equation}
+  D(\tau)=\frac{1}{L}\sum_i
+    \langle n_{i\uparrow}n_{i\downarrow}\rangle_\tau,
+  \qquad
+  I_n(\tau)=\frac{1}{L}\sum_i(-1)^{i-1}
+    \langle n_{i\uparrow}+n_{i\downarrow}\rangle_\tau.
+\end{equation}
+No estado de Néel do Hubbard com uma partícula por sítio e $L$ par,
+a densidade inicial é uniforme e $I_n(0)=0$. Assim, esse desequilíbrio
+não deve ser anunciado como medida de relaxação de um padrão de carga
+inicial nessa preparação. Um protocolo que o use com esse propósito
+precisará preparar tal padrão.
+
+O avanço nesta etapa será reconhecer o que cada observável informa,
+separar conservação de relaxação e distinguir estabilidade temporal
+de compatibilidade térmica. Evidências em tamanhos finitos deverão
+continuar identificadas como tais, sem extrapolação automática.
+
+As próximas decisões são escolher os parâmetros e o protocolo,
+selecionar observáveis e referências de comparação e definir os
+critérios temporais. Só depois será escolhido um método numérico em
+Julia, precedido de estimativas da dimensão do espaço de Hilbert,
+dos setores aproveitáveis, da memória e do custo. Não há compromisso
+aqui com um valor numérico de $L$ ou com um algoritmo.
+
+\paragraph{Escopo e pendências.}
+Este arquivo é um roteiro de estudo, não uma revisão de literatura,
+uma derivação extensa ou um relato de resultados. Nenhum cálculo
+numérico ou teste foi executado para produzi-lo. O roteiro pessoal
+do usuário ainda não foi disponibilizado e poderá ser incorporado
+posteriormente, ajustando a sequência sem antecipar novas decisões
+de escopo.
+
+\end{document}
